@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const parser = require('body-parser');
 const app = express();
+const morgan = require('morgan');
 
 // ------------------------------------------------------------------------------------
 
@@ -15,6 +16,7 @@ const passport = require('./services/passport').passport;
 app.use(passport.initialize());
 
 // Middleware
+app.use(morgan(':method :url :status :response-time ms - :res[content-length]\n'));
 app.use(parser.urlencoded({extended: false}));
 app.use(parser.json());
 

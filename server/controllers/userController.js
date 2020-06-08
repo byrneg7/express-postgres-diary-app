@@ -1,41 +1,42 @@
-const jwt = require('jsonwebtoken');
 const User = require('../models/User').User;
+const makeJwt = require('../helpers/sendJwt').makeJwt;
 
 const registerUser = (req, res) => {
-  if (!req.body.email || !req.body.password) {
-    return res.status(401).send('no fields');
-  }
-
-  const user = new User({
-    email: req.body.email,
-    password: req.body.password
-  });
-
-  user.save().then(() => {
-    res.send('ok');
-  });
+  const {email, password} = req.body.user;
+  User.where({email}).fetch({require: false})
+    .then(result => {
+      if (result) {
+        return res.status(422).send({error: 'Email already taken'})
+      } else {
+        const user = new User({email, password});
+        user.save()
+          .then(user => res.send({access_token: makeJwt(user)}))
+          .catch(err => {
+            return res.status(401).send(err)
+          })
+      }
+    })
 };
 
 const loginUser = (req, res) => {
-  if (!req.body.email || !req.body.password) {
-    return res.status(401).send('no fields');
-  }
+  const {email, password} = req.body.user;
 
-  User.forge({email: req.body.email}).fetch().then(result => {
+  User.forge({email}).fetch({require: false}).then(result => {
     if (!result) {
-      return res.status(400).send('user not found');
+      return res.status(404).send('user not found');
     }
-    result.authenticate(req.body.password).then(user => {
-      const payload = {id: user.id};
-      const token = jwt.sign(payload, process.env.JWT_SECRET);
-      res.send({access_token: token})
-    }).catch(err => {
-      return res.status(401).send(err)
-    })
+    result.authenticate(password)
+      .then(user => res.send({access_token: makeJwt(user)}))
+      .catch(err => {
+        return res.status(401).send(err)
+      })
   });
 };
 
+const fetchUser = (req, res) => res.send(req.user);
+
 module.exports = {
   registerUser,
-  loginUser
+  loginUser,
+  fetchUser
 };

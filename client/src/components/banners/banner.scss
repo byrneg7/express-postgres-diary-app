@@ -6,8 +6,8 @@ header.masthead {
   background-color: $gray-800;
   background: url('../../assets/images/bg-masthead.jpg') no-repeat center center;
   @include background-cover;
-  padding-top: 8rem;
-  padding-bottom: 8rem;
+  padding-top: 6rem;
+  padding-bottom: 6rem;
   .overlay {
     position: absolute;
     background-color: $gray-900;
