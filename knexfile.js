@@ -1,9 +1,9 @@
-// Update with your config settings.
+require('dotenv').config();
 
 module.exports = {
   client: 'pg',
   connection: process.env.DATABASE_URL,
   migrations: {
-    directory: __dirname + '/db/migrations',
+    directory: __dirname + '/server/db/migrations',
   },
 };
