@@ -4,7 +4,7 @@ module.exports = {
 
   development: {
     client: 'pg',
-    connection: 'postgres://localhost/jwt_test'
+    connection: process.env.DATABASE_URL
   },
 
   // staging: {
