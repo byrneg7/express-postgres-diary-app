@@ -1,4 +1,7 @@
 exports.up = function (knex) {
+
+  console.log('migration up')
+
   return knex.schema.createTable('login_user', t => {
     t.increments('id').unsigned().primary();
     t.string('email').notNullable().unique();
