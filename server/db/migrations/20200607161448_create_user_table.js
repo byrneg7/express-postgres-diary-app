@@ -1,12 +1,13 @@
 exports.up = function (knex) {
-
-  console.log('migration up')
-
-  return knex.schema.createTable('login_user', t => {
-    t.increments('id').unsigned().primary();
-    t.string('email').notNullable().unique();
-    t.string('password_digest').notNullable()
-  })
+  try {
+    return knex.schema.createTable('login_user', t => {
+      t.increments('id').unsigned().primary();
+      t.string('email').notNullable().unique();
+      t.string('password_digest').notNullable()
+    })
+  } catch (err) {
+    console.log(err)
+  }
 };
 
 exports.down = function (knex) {
