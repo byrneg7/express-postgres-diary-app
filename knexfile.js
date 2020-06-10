@@ -1,12 +1,3 @@
-require('dotenv').config();
-
-console.log('*** knexfile ***');
-
-console.log(__dirname + '/server/db/migrations');
-console.log(process.env.DATABASE_URL);
-
-console.log('*** knexfile ***');
-
 module.exports = {
   test: {
     client: 'pg',
